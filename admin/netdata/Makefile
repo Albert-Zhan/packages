@@ -30,7 +30,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/netdata
   SECTION:=admin
   CATEGORY:=Administration
-  DEPENDS:=+zlib +libuuid +libmnl +libjson-c +libuv
+  DEPENDS:=+zlib +libuuid +libuv +libmnl +libjson-c
   TITLE:=Real-time performance monitoring tool
   URL:=https://www.netdata.cloud/
 endef
@@ -50,6 +50,7 @@ TARGET_LDFLAGS += -Wl,--gc-sections
 CONFIGURE_ARGS += \
 	--with-zlib \
 	--with-math \
+	--disable-x86-sse \
 	--enable-lto \
 	--without-libcap \
 	--disable-https \
@@ -60,10 +61,6 @@ CONFIGURE_ARGS += \
 	--disable-plugin-xenstat \
 	--disable-backend-prometheus-remote-write \
 	--enable-jsonc
-
-ifneq ($(ARCH),x86_64)
-	CONFIGURE_ARGS += --disable-x86-sse
-endif
 
 define Package/netdata/conffiles
 /etc/netdata/
